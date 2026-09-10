@@ -1,7 +1,7 @@
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
-  name: tx1320m3-02
+  name: srv-02
   namespace: metal3
   labels:
     cluster-role: control-plane

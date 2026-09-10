@@ -4,6 +4,6 @@ namespace: metal3
 
 resources:
   - bmc-auth.yaml
-  - tx1320m3-01.yaml
-  - tx1320m3-02.yaml
-  - tx1320m3-03.yaml
+  - srv-01.yaml
+  - srv-02.yaml
+  - srv-03.yaml
