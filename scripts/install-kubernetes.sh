@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
 install -d -m 0755 /etc/apt/keyrings
@@ -19,7 +19,7 @@ systemctl enable --now crio
 systemctl enable kubelet
 
 printf 'br_netfilter\noverlay\n' > /etc/modules-load.d/k8s.conf
-modprobe br_netfilter overlay
+modprobe -a br_netfilter overlay
 printf 'net.bridge.bridge-nf-call-iptables=1\nnet.ipv4.ip_forward=1\nnet.bridge.bridge-nf-call-ip6tables=1\n' \
   > /etc/sysctl.d/k8s.conf
 sysctl --system

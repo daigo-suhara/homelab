@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - baremetal-operator.yaml
+  - ironic/application.yaml
+  - irso.yaml
+  - capi-operator/application.yaml
+  - cert-manager.yaml
+  - cluster.yaml
+  - hardware.yaml
+  - addons.yaml

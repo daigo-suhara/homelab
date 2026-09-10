@@ -1,0 +1,21 @@
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: KubeadmConfigTemplate
+metadata:
+  name: homelab-worker
+  namespace: metal3
+spec:
+  template:
+    spec:
+      users:
+        - name: ubuntu
+          sshAuthorizedKeys:
+            - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3Q/eAOgoIs0pNtGvQ8ueXK1Gg8CnIdhcU9rwpeMFm suharadaigo
+          sudo: ALL=(ALL) NOPASSWD:ALL
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            - name: node-labels
+              value: 'node-role.kubernetes.io/worker=true,metal3.io/uuid={{ ds.meta_data.uuid }}'
+      preKubeadmCommands:
+        - curl -fsSL https://raw.githubusercontent.com/daigo-suhara/homelab/main/scripts/install-kubernetes.sh -o /run/install-kubernetes.sh
+        - bash /run/install-kubernetes.sh

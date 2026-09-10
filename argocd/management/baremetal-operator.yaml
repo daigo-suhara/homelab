@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: baremetal-operator
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/metal3-io/baremetal-operator.git
+    targetRevision: v0.13.2
+    path: config/use-irso
+    kustomize:
+      namespace: metal3
+      images:
+        - quay.io/metal3-io/baremetal-operator:v0.13.2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metal3
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true

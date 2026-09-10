@@ -23,10 +23,27 @@ spec:
       maxHistory: 10
   valuesTemplate: |-
     configs:
-      cm:
-        kustomize.buildOptions: --enable-helm
       params:
         controller.diff.server.side: "true"
     server:
       service:
         type: LoadBalancer
+    extraObjects:
+      - apiVersion: argoproj.io/v1alpha1
+        kind: Application
+        metadata:
+          name: app-of-apps
+          namespace: argocd
+        spec:
+          project: default
+          source:
+            repoURL: https://github.com/daigo-suhara/homelab.git
+            targetRevision: HEAD
+            path: argocd/workloads
+          destination:
+            server: https://kubernetes.default.svc
+            namespace: argocd
+          syncPolicy:
+            automated:
+              prune: true
+              selfHeal: true

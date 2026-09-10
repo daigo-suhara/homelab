@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: irso
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/metal3-io/ironic-standalone-operator.git
+    targetRevision: v0.11.0
+    path: config/default
+    kustomize:
+      images:
+        - quay.io/metal3-io/ironic-standalone-operator:v0.11.0
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ironic-standalone-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true

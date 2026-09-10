@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ironic-standalone-operator-ironic-standalone-operator-config
-data:
-  IPA_BASEURI: https://tarballs.opendev.org/openstack/ironic-python-agent/dib
