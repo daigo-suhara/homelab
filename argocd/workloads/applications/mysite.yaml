@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/daigo-suhara/homelab.git
     targetRevision: HEAD
-    path: homelab/mysite
+    path: argocd/workloads/manifests/mysite
   destination:
     server: https://kubernetes.default.svc
     namespace: mysite

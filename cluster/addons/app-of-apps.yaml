@@ -16,7 +16,7 @@ stringData:
       source:
         repoURL: https://github.com/daigo-suhara/homelab.git
         targetRevision: HEAD
-        path: homelab
+        path: argocd/workloads/applications
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
