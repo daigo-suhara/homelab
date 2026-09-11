@@ -9,6 +9,23 @@
         cmd: snap install microk8s --classic
         creates: /snap/bin/microk8s
 
+    - name: Configure kubectl alias
+      ansible.builtin.lineinfile:
+        path: /home/{{ ansible_user }}/.bashrc
+        line: "alias kubectl='microk8s kubectl'"
+        create: true
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "0644"
+
+    - name: Start MicroK8s
+      ansible.builtin.command: microk8s start
+      changed_when: false
+
+    - name: Wait for MicroK8s
+      ansible.builtin.command: microk8s status --wait-ready --timeout 300
+      changed_when: false
+
     - name: Check the MicroK8s API server kicker
       ansible.builtin.command: snap services microk8s.daemon-apiserver-kicker
       register: apiserver_kicker
@@ -19,30 +36,30 @@
       when: "'disabled' not in apiserver_kicker.stdout"
       changed_when: true
 
-    - name: Start MicroK8s
-      ansible.builtin.command: microk8s start
-      changed_when: false
-
-    - name: Wait for MicroK8s to be ready
-      ansible.builtin.command: microk8s status --wait-ready
-      changed_when: false
-
     - name: Enable MicroK8s addons
       ansible.builtin.command: microk8s enable {{ item }}
       register: addon_enable
       loop:
-        - community
         - dns
-        - rook-ceph
+        - storage
         - rbac
         - helm3
-        - argocd
       changed_when: "'already enabled' not in addon_enable.stdout"
 
-    - name: Wait for the Argo CD Application CRD
-      ansible.builtin.command:
-        cmd: microk8s kubectl wait --for=condition=Established crd/applications.argoproj.io --timeout=5m
+    - name: Read the Argo CD release
+      ansible.builtin.command: microk8s helm3 status argocd --namespace argocd --output json
+      register: argocd_release
       changed_when: false
+      failed_when: argocd_release.rc not in [0, 1]
+
+    - name: Install Argo CD
+      ansible.builtin.command: >-
+        microk8s helm3 upgrade --install argocd argo-cd
+        --repo https://argoproj.github.io/argo-helm
+        --namespace argocd --create-namespace
+        --wait --timeout 10m
+      when: argocd_release.rc != 0 or argocd_chart_version not in argocd_release.stdout
+      changed_when: true
 
     - name: Apply the management App-of-Apps
       ansible.builtin.command:
