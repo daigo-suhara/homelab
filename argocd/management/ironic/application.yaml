@@ -13,7 +13,7 @@ spec:
     path: argocd/management/ironic
   destination:
     server: https://kubernetes.default.svc
-    namespace: metal3
+    namespace: baremetal-operator-system
   syncPolicy:
     automated:
       prune: true
