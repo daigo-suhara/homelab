@@ -11,6 +11,15 @@ spec:
     repoURL: https://github.com/metal3-io/baremetal-operator.git
     targetRevision: v0.13.2
     path: config/use-irso
+    kustomize:
+      patches:
+        - target:
+            kind: ConfigMap
+            name: ironic
+          patch: |-
+            - op: add
+              path: /data/IRONIC_NAMESPACE
+              value: metal3
   destination:
     server: https://kubernetes.default.svc
     namespace: baremetal-operator-system
