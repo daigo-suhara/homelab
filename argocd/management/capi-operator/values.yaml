@@ -12,6 +12,11 @@ bootstrap:
     manager:
       featureGates:
         KubeadmBootstrapFormatIgnition: true
+    deployment:
+      containers:
+        - name: manager
+          args:
+            --feature-gates: KubeadmBootstrapFormatIgnition=true
 
 controlPlane:
   kubeadm:
@@ -21,6 +26,11 @@ controlPlane:
     manager:
       featureGates:
         KubeadmBootstrapFormatIgnition: true
+    deployment:
+      containers:
+        - name: manager
+          args:
+            --feature-gates: KubeadmBootstrapFormatIgnition=true
 
 infrastructure:
   metal3:
