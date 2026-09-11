@@ -15,7 +15,7 @@ spec:
   options:
     enableClientCache: false
     waitForJobs: true
-    wait: false
+    wait: true
     timeout: 10m0s
     install:
       createNamespace: true
