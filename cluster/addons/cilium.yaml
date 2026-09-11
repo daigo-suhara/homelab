@@ -71,7 +71,7 @@ spec:
   clusterSelector:
     matchLabels:
       cluster.x-k8s.io/cluster-name: homelab
-  strategy: ApplyOnce
+  strategy: Reconcile
   resources:
     - kind: Secret
       name: cilium-load-balancer
