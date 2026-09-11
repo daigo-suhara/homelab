@@ -11,9 +11,6 @@ spec:
     repoURL: https://github.com/metal3-io/ironic-standalone-operator.git
     targetRevision: v0.11.0
     path: config/default
-    kustomize:
-      images:
-        - quay.io/metal3-io/ironic-standalone-operator:v0.11.0
   destination:
     server: https://kubernetes.default.svc
     namespace: ironic-standalone-operator-system

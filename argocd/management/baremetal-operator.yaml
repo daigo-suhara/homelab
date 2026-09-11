@@ -11,13 +11,9 @@ spec:
     repoURL: https://github.com/metal3-io/baremetal-operator.git
     targetRevision: v0.13.2
     path: config/use-irso
-    kustomize:
-      namespace: metal3
-      images:
-        - quay.io/metal3-io/baremetal-operator:v0.13.2
   destination:
     server: https://kubernetes.default.svc
-    namespace: metal3
+    namespace: baremetal-operator-system
   syncPolicy:
     automated:
       prune: true
