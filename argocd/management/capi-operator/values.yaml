@@ -9,6 +9,13 @@ bootstrap:
     namespace: capi-kubeadm-bootstrap-system
     version: v1.14.0
     createNamespace: true
+    # Flatcar consumes the bootstrap payload as Ignition rather than cloud-init.
+    deployment:
+      containers:
+        - name: manager
+          env:
+            - name: EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION
+              value: "true"
 
 controlPlane:
   kubeadm:

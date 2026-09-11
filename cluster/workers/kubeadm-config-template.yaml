@@ -6,16 +6,25 @@ metadata:
 spec:
   template:
     spec:
-      users:
-        - name: ubuntu
-          sshAuthorizedKeys:
-            - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3Q/eAOgoIs0pNtGvQ8ueXK1Gg8CnIdhcU9rwpeMFm suharadaigo
-          sudo: ALL=(ALL) NOPASSWD:ALL
+      format: ignition
       joinConfiguration:
         nodeRegistration:
+          criSocket: unix:///var/run/crio/crio.sock
           kubeletExtraArgs:
             - name: node-labels
-              value: 'node-role.kubernetes.io/worker=true,metal3.io/uuid={{ ds.meta_data.uuid }}'
+              value: node-role.kubernetes.io/worker=true
       preKubeadmCommands:
-        - curl -fsSL https://raw.githubusercontent.com/daigo-suhara/homelab/main/scripts/install-kubernetes.sh -o /run/install-kubernetes.sh
-        - bash /run/install-kubernetes.sh
+        - until getent hosts extensions.flatcar.org >/dev/null 2>&1; do sleep 5; done
+        - mkdir -p /opt/extensions/kubernetes /opt/extensions/crio /etc/extensions /etc/sysupdate.kubernetes.d /etc/sysupdate.crio.d /etc/sysupdate.d
+        - curl -fL --retry 10 --retry-delay 5 -o /etc/sysupdate.kubernetes.d/kubernetes-v1.36.conf https://extensions.flatcar.org/extensions/kubernetes/kubernetes-v1.36.conf
+        - curl -fL --retry 10 --retry-delay 5 -o /etc/sysupdate.crio.d/crio.conf https://extensions.flatcar.org/extensions/crio/crio.conf
+        - curl -fL --retry 10 --retry-delay 5 -o /etc/sysupdate.d/noop.conf https://extensions.flatcar.org/extensions/noop.conf
+        - curl -fL --retry 10 --retry-delay 5 -o /opt/extensions/kubernetes/kubernetes-v1.36.2-x86-64.raw https://extensions.flatcar.org/extensions/kubernetes/kubernetes-v1.36.2-x86-64.raw
+        - curl -fL --retry 10 --retry-delay 5 -o /opt/extensions/crio/crio-v1.36.2-x86-64.raw https://extensions.flatcar.org/extensions/crio/crio-v1.36.2-x86-64.raw
+        - ln -sf /opt/extensions/kubernetes/kubernetes-v1.36.2-x86-64.raw /etc/extensions/kubernetes.raw
+        - ln -sf /opt/extensions/crio/crio-v1.36.2-x86-64.raw /etc/extensions/crio.raw
+        - ln -sf /dev/null /etc/extensions/containerd-flatcar.raw
+        - systemd-sysext refresh || systemd-sysext merge
+        - systemctl daemon-reload
+        - systemctl enable --now crio.service
+        - systemctl enable kubelet.service

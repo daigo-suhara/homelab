@@ -10,9 +10,9 @@ spec:
       dataTemplate:
         name: homelab-worker
       image:
-        url: https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-24.04-server-cloudimg-amd64.img
-        checksum: https://cloud-images.ubuntu.com/releases/24.04/release/SHA256SUMS
-        checksumType: sha256
+        url: https://stable.release.flatcar-linux.net/amd64-usr/4593.2.3/flatcar_production_openstack_image.img
+        checksum: b6b88e9634c6f44b696f0ed5dc6f136d
+        checksumType: md5
         diskFormat: qcow2
       hostSelector:
         matchLabels:
