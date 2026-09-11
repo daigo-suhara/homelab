@@ -15,7 +15,7 @@ spec:
   options:
     enableClientCache: false
     waitForJobs: true
-    wait: true
+    wait: false
     timeout: 10m0s
     install:
       createNamespace: true
@@ -28,22 +28,3 @@ spec:
     server:
       service:
         type: LoadBalancer
-    extraObjects:
-      - apiVersion: argoproj.io/v1alpha1
-        kind: Application
-        metadata:
-          name: app-of-apps
-          namespace: argocd
-        spec:
-          project: default
-          source:
-            repoURL: https://github.com/daigo-suhara/homelab.git
-            targetRevision: HEAD
-            path: argocd/workloads
-          destination:
-            server: https://kubernetes.default.svc
-            namespace: argocd
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
