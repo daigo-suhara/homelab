@@ -3,9 +3,6 @@
   hosts: management
   become: true
 
-  vars:
-    argocd_chart_version: 10.1.4
-
   tasks:
     - name: Install MicroK8s
       ansible.builtin.command:
@@ -26,26 +23,13 @@
       ansible.builtin.command: microk8s enable {{ item }}
       register: addon_enable
       loop:
+        - community
         - dns
-        - hostpath-storage
+        - rook-ceph
         - rbac
         - helm3
+        - argocd
       changed_when: "'already enabled' not in addon_enable.stdout"
-
-    - name: Read the Argo CD release
-      ansible.builtin.command: microk8s helm3 status argocd --namespace argocd --output json
-      register: argocd_release
-      changed_when: false
-      failed_when: argocd_release.rc not in [0, 1]
-
-    - name: Install Argo CD
-      ansible.builtin.command: >-
-        microk8s helm3 upgrade --install argocd argo-cd
-        --repo https://argoproj.github.io/argo-helm
-        --namespace argocd --create-namespace
-        --version {{ argocd_chart_version }} --wait --timeout 10m
-      when: argocd_release.rc != 0 or argocd_chart_version not in argocd_release.stdout
-      changed_when: true
 
     - name: Apply the management App-of-Apps
       ansible.builtin.command:
