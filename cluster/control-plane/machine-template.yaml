@@ -10,9 +10,9 @@ spec:
       dataTemplate:
         name: homelab-control-plane
       image:
-        url: https://stable.release.flatcar-linux.net/amd64-usr/4593.2.3/flatcar_production_openstack_image.img
-        checksum: b6b88e9634c6f44b696f0ed5dc6f136d
-        checksumType: md5
+        url: https://cloud-images.ubuntu.com/minimal/releases/resolute/release/ubuntu-26.04-minimal-cloudimg-amd64.img
+        checksum: https://cloud-images.ubuntu.com/minimal/releases/resolute/release/SHA256SUMS
+        checksumType: sha256
         diskFormat: qcow2
       hostSelector:
         matchLabels:

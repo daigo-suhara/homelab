@@ -6,25 +6,19 @@ metadata:
 spec:
   template:
     spec:
-      format: ignition
       joinConfiguration:
         nodeRegistration:
-          criSocket: unix:///var/run/crio/crio.sock
           kubeletExtraArgs:
             - name: node-labels
-              value: node-role.kubernetes.io/worker=true
+              value: 'node-role.kubernetes.io/worker=true,metal3.io/uuid={{ ds.meta_data.uuid }}'
       preKubeadmCommands:
-        - until getent hosts extensions.flatcar.org >/dev/null 2>&1; do sleep 5; done
-        - mkdir -p /opt/extensions/kubernetes /opt/extensions/crio /etc/extensions /etc/sysupdate.kubernetes.d /etc/sysupdate.crio.d /etc/sysupdate.d
-        - curl -fL --retry 10 --retry-delay 5 -o /etc/sysupdate.kubernetes.d/kubernetes-v1.36.conf https://extensions.flatcar.org/extensions/kubernetes/kubernetes-v1.36.conf
-        - curl -fL --retry 10 --retry-delay 5 -o /etc/sysupdate.crio.d/crio.conf https://extensions.flatcar.org/extensions/crio/crio.conf
-        - curl -fL --retry 10 --retry-delay 5 -o /etc/sysupdate.d/noop.conf https://extensions.flatcar.org/extensions/noop.conf
-        - curl -fL --retry 10 --retry-delay 5 -o /opt/extensions/kubernetes/kubernetes-v1.36.2-x86-64.raw https://extensions.flatcar.org/extensions/kubernetes/kubernetes-v1.36.2-x86-64.raw
-        - curl -fL --retry 10 --retry-delay 5 -o /opt/extensions/crio/crio-v1.36.2-x86-64.raw https://extensions.flatcar.org/extensions/crio/crio-v1.36.2-x86-64.raw
-        - ln -sf /opt/extensions/kubernetes/kubernetes-v1.36.2-x86-64.raw /etc/extensions/kubernetes.raw
-        - ln -sf /opt/extensions/crio/crio-v1.36.2-x86-64.raw /etc/extensions/crio.raw
-        - ln -sf /dev/null /etc/extensions/containerd-flatcar.raw
-        - systemd-sysext refresh || systemd-sysext merge
-        - systemctl daemon-reload
-        - systemctl enable --now crio.service
-        - systemctl enable kubelet.service
+        - apt-get update
+        - apt-get install -y ca-certificates curl gpg
+        - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes.gpg
+        - echo 'deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' > /etc/apt/sources.list.d/kubernetes.list
+        - curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.37/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/cri-o.gpg
+        - echo 'deb [signed-by=/etc/apt/keyrings/cri-o.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.37/deb/ /' > /etc/apt/sources.list.d/cri-o.list
+        - apt-get update
+        - apt-get install -y cri-o kubelet kubeadm
+        - systemctl enable --now crio
+        - systemctl enable kubelet

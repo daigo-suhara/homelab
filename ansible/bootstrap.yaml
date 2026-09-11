@@ -6,7 +6,7 @@
   tasks:
     - name: Install MicroK8s
       ansible.builtin.command:
-        cmd: snap install microk8s --channel=1.36/stable
+        cmd: snap install microk8s --channel=1.37/stable
         creates: /snap/bin/microk8s
 
     - name: Configure kubectl alias
