@@ -20,3 +20,11 @@ ansible-playbook bootstrap.yaml
 3. Argo CDにMetal3関連リソースのデプロイが登録されます．
 
 Argo CDによる同期が進むと，Metal3が3台の物理サーバを検知し，電源の起動，OSのインストール，Kubernetesクラスタ（3台のコントロールプレーン）の構築を行います．
+
+4. 構築後、ワークロードクラスタのkubeconfigを手元へ保存します
+
+```bash
+make kubeconfig
+export KUBECONFIG="$HOME/.kube/homelab"
+kubectl get nodes
+```
