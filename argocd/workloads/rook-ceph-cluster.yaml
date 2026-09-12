@@ -33,11 +33,11 @@ spec:
             useAllDevices: false
             nodes:
               - name: srv-01
-                devices: [{ name: sdb }]
+                devicePathFilter: "26061129626000582$"
               - name: srv-02
-                devices: [{ name: sdb }]
+                devicePathFilter: "26060891625000358$"
               - name: srv-03
-                devices: [{ name: sdb }]
+                devicePathFilter: "26060891625000370$"
         cephBlockPools:
           - name: rbd
             spec:

@@ -14,4 +14,4 @@ spec:
     credentialsName: bmc-auth
     disableCertificateVerification: true
   rootDeviceHints:
-    deviceName: "/dev/sda"
+    serialNumber: "1960A03GF3NG"
