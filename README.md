@@ -28,3 +28,9 @@ make kubeconfig
 export KUBECONFIG="$HOME/.kube/homelab"
 kubectl get nodes
 ```
+
+## 外部 DNS での公開
+
+`daigo-suhara.com` の A レコードを自宅のグローバル IP に向けたうえで、ルーターで TCP `80` と `443` を `172.16.100.110`（`ingress-nginx-controller` の Cilium L2 LoadBalancer IP）へ転送します。Argo CD の同期後、`https://daigo-suhara.com` は `mysite` に到達し、cert-manager が Let's Encrypt の証明書を HTTP-01 で取得・更新します。
+
+サブドメインを公開する際は、DNS にその名前の A レコード（または `*.daigo-suhara.com` のワイルドカード A レコード）を同じグローバル IP へ追加し、対象サービスの `Ingress` に対応する `host` と TLS 設定を追加します。
