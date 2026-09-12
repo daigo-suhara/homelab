@@ -16,8 +16,13 @@ spec:
         apiGroup: infrastructure.cluster.x-k8s.io
         kind: Metal3MachineTemplate
         name: homelab-control-plane
-  version: v1.37.0
+  version: v1.36.0
   kubeadmConfigSpec:
+    users:
+      - name: ubuntu
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        sshAuthorizedKeys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3Q/eAOgoIs0pNtGvQ8ueXK1Gg8CnIdhcU9rwpeMFm suharadaigo
     clusterConfiguration:
       apiServer:
         certSANs: [172.16.10.100, 127.0.0.1]
@@ -37,10 +42,10 @@ spec:
     preKubeadmCommands:
       - apt-get update
       - apt-get install -y ca-certificates curl gpg
-      - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.37/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes.gpg
-      - echo 'deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.37/deb/ /' > /etc/apt/sources.list.d/kubernetes.list
-      - curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.37/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/cri-o.gpg
-      - echo 'deb [signed-by=/etc/apt/keyrings/cri-o.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.37/deb/ /' > /etc/apt/sources.list.d/cri-o.list
+      - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.36/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes.gpg
+      - echo 'deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://pkgs.k8s.io/core:/stable:/v1.36/deb/ /' > /etc/apt/sources.list.d/kubernetes.list
+      - curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.36/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/cri-o.gpg
+      - echo 'deb [signed-by=/etc/apt/keyrings/cri-o.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.36/deb/ /' > /etc/apt/sources.list.d/cri-o.list
       - apt-get update
       - apt-get install -y cri-o kubelet kubeadm
       - systemctl enable --now crio
