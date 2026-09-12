@@ -24,4 +24,4 @@ spec:
         apiGroup: infrastructure.cluster.x-k8s.io
         kind: Metal3MachineTemplate
         name: homelab-worker
-      version: v1.36.0
+      version: v1.36.4

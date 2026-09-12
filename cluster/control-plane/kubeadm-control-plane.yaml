@@ -16,7 +16,7 @@ spec:
         apiGroup: infrastructure.cluster.x-k8s.io
         kind: Metal3MachineTemplate
         name: homelab-control-plane
-  version: v1.36.0
+  version: v1.36.4
   kubeadmConfigSpec:
     clusterConfiguration:
       apiServer:
@@ -42,7 +42,7 @@ spec:
       - curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.36/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/cri-o.gpg
       - echo 'deb [signed-by=/etc/apt/keyrings/cri-o.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.36/deb/ /' > /etc/apt/sources.list.d/cri-o.list
       - apt-get update
-      - apt-get install -y cri-o kubelet kubeadm
+      - apt-get install -y cri-o kubelet=1.36.4-1.1 kubeadm=1.36.4-1.1
       - systemctl enable --now crio
       - systemctl enable kubelet
       - echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/k8s.conf
