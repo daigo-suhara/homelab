@@ -18,11 +18,6 @@ spec:
         name: homelab-control-plane
   version: v1.36.0
   kubeadmConfigSpec:
-    users:
-      - name: ubuntu
-        sudo: ALL=(ALL) NOPASSWD:ALL
-        sshAuthorizedKeys:
-          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3Q/eAOgoIs0pNtGvQ8ueXK1Gg8CnIdhcU9rwpeMFm suharadaigo
     clusterConfiguration:
       apiServer:
         certSANs: [172.16.10.100, 127.0.0.1]
