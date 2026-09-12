@@ -4,5 +4,4 @@ namespace: mysite
 resources:
   - deployment.yaml
   - service.yaml
-  - issuer.yaml
-  - ingress.yaml
+  - routes.yaml

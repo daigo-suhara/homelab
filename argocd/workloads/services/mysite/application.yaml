@@ -12,20 +12,13 @@ spec:
   source:
     repoURL: https://github.com/daigo-suhara/homelab.git
     targetRevision: HEAD
-    path: argocd/workloads/mysite
+    path: argocd/workloads/services/mysite
   destination:
     server: https://kubernetes.default.svc
     namespace: mysite
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]
     retry:
       limit: 10
-      backoff:
-        duration: 30s
-        factor: 2
-        maxDuration: 5m
+      backoff: { duration: 30s, factor: 2, maxDuration: 5m }

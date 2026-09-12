@@ -16,13 +16,11 @@ spec:
       values: |
         crds:
           enabled: true
+        extraArgs:
+          - --enable-gateway-api
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]

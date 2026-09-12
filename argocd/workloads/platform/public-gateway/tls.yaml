@@ -1,0 +1,28 @@
+# Add a Certificate and matching HTTPS listener in gateway.yaml for each new
+# public hostname. Routes remain owned by the application namespace.
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production-account-key
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: public
+                kind: Gateway
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: daigo-suhara-com
+spec:
+  secretName: daigo-suhara-com-tls
+  dnsNames: [daigo-suhara.com]
+  issuerRef:
+    name: letsencrypt-production
+    kind: Issuer

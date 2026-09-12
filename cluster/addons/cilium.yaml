@@ -37,6 +37,8 @@ spec:
       enabled: false
     l2announcements:
       enabled: true
+    gatewayAPI:
+      enabled: true
 ---
 apiVersion: v1
 kind: Secret
