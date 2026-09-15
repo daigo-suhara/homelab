@@ -1,0 +1,88 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: default
+  source:
+    repoURL: ghcr.io/helmforgedev/helm
+    chart: wordpress
+    targetRevision: 3.0.6
+    helm:
+      releaseName: wordpress
+      valuesObject:
+        fullnameOverride: wordpress
+        replicaCount: 2
+        wordpress:
+          siteUrl: https://www.daigo-suhara.com
+          siteTitle: www.daigo-suhara.com
+          adminEmail: suharadaigo@gmail.com
+          disableWpCron: true
+        bootstrap:
+          enabled: true
+        mysql:
+          architecture: standalone
+          standalone:
+            persistence:
+              storageClass: general
+              size: 10Gi
+        persistence:
+          storageClass: cephfs
+          accessMode: ReadWriteMany
+          size: 10Gi
+        plugins:
+          enabled: true
+          installer:
+            enabled: true
+        objectCache:
+          enabled: true
+          provider: redis
+          redis:
+            mode: subchart
+            subchart:
+              enabled: true
+        redis:
+          standalone:
+            persistence:
+              enabled: false
+        wpCron:
+          cronJob:
+            enabled: true
+        backup:
+          enabled: false
+        gatewayAPI:
+          enabled: true
+          parentRefs:
+            - name: public
+              namespace: gateway-system
+              sectionName: https-www-daigo-suhara-com
+          hostnames: [www.daigo-suhara.com]
+        extraManifests:
+          - apiVersion: gateway.networking.k8s.io/v1
+            kind: HTTPRoute
+            metadata:
+              name: wordpress-http-redirect
+            spec:
+              parentRefs:
+                - name: public
+                  namespace: gateway-system
+                  sectionName: http
+              hostnames: [www.daigo-suhara.com]
+              rules:
+                - filters:
+                    - type: RequestRedirect
+                      requestRedirect:
+                        scheme: https
+                        statusCode: 301
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wordpress
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]
+    retry:
+      limit: 10
+      backoff: { duration: 30s, factor: 2, maxDuration: 5m }

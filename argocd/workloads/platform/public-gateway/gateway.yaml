@@ -14,14 +14,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: https-daigo-suhara-com
+    - name: https-www-daigo-suhara-com
       protocol: HTTPS
       port: 443
-      hostname: daigo-suhara.com
+      hostname: www.daigo-suhara.com
       allowedRoutes:
         namespaces:
           from: All
       tls:
         mode: Terminate
         certificateRefs:
-          - name: daigo-suhara-com-tls
+          - name: www-daigo-suhara-com-tls

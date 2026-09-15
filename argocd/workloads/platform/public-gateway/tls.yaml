@@ -19,10 +19,10 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: daigo-suhara-com
+  name: www-daigo-suhara-com
 spec:
-  secretName: daigo-suhara-com-tls
-  dnsNames: [daigo-suhara.com]
+  secretName: www-daigo-suhara-com-tls
+  dnsNames: [www.daigo-suhara.com]
   issuerRef:
     name: letsencrypt-production
     kind: Issuer
