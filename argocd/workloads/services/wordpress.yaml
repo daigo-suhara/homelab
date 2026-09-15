@@ -22,7 +22,7 @@ spec:
           adminEmail: suharadaigo@gmail.com
           disableWpCron: true
         bootstrap:
-          enabled: true
+          enabled: false
         mysql:
           architecture: standalone
           standalone:
