@@ -22,7 +22,7 @@ metadata:
   name: www-daigo-suhara-com
 spec:
   secretName: www-daigo-suhara-com-tls
-  dnsNames: [www.daigo-suhara.com]
+  dnsNames: [daigo-suhara.com, www.daigo-suhara.com]
   issuerRef:
     name: letsencrypt-production
     kind: Issuer

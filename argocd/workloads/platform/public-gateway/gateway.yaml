@@ -25,3 +25,14 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: www-daigo-suhara-com-tls
+    - name: https-daigo-suhara-com
+      protocol: HTTPS
+      port: 443
+      hostname: daigo-suhara.com
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: www-daigo-suhara-com-tls
