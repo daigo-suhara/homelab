@@ -36,3 +36,25 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: www-daigo-suhara-com-tls
+    - name: https-www-pochizo-com
+      protocol: HTTPS
+      port: 443
+      hostname: www.pochizo.com
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: pochizo-com-tls
+    - name: https-pochizo-com
+      protocol: HTTPS
+      port: 443
+      hostname: pochizo.com
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: pochizo-com-tls

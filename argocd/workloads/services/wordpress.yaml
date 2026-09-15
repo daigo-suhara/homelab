@@ -17,8 +17,8 @@ spec:
         fullnameOverride: wordpress
         replicaCount: 2
         wordpress:
-          siteUrl: https://www.daigo-suhara.com
-          siteTitle: www.daigo-suhara.com
+          siteUrl: https://www.pochizo.com
+          siteTitle: pochizo.com
           adminEmail: suharadaigo@gmail.com
           disableWpCron: true
         bootstrap:
@@ -58,8 +58,8 @@ spec:
           parentRefs:
             - name: public
               namespace: gateway-system
-              sectionName: https-www-daigo-suhara-com
-          hostnames: [www.daigo-suhara.com]
+              sectionName: https-www-pochizo-com
+          hostnames: [www.pochizo.com]
         extraManifests:
           - apiVersion: gateway.networking.k8s.io/v1
             kind: HTTPRoute
@@ -70,7 +70,7 @@ spec:
                 - name: public
                   namespace: gateway-system
                   sectionName: http
-              hostnames: [www.daigo-suhara.com]
+              hostnames: [www.pochizo.com]
               rules:
                 - filters:
                     - type: RequestRedirect
@@ -88,14 +88,37 @@ spec:
                   sectionName: http
                 - name: public
                   namespace: gateway-system
-                  sectionName: https-daigo-suhara-com
-              hostnames: [daigo-suhara.com]
+                  sectionName: https-pochizo-com
+              hostnames: [pochizo.com]
               rules:
                 - filters:
                     - type: RequestRedirect
                       requestRedirect:
                         scheme: https
-                        hostname: www.daigo-suhara.com
+                        hostname: www.pochizo.com
+                        statusCode: 301
+          - apiVersion: gateway.networking.k8s.io/v1
+            kind: HTTPRoute
+            metadata:
+              name: wordpress-legacy-redirect
+            spec:
+              parentRefs:
+                - name: public
+                  namespace: gateway-system
+                  sectionName: http
+                - name: public
+                  namespace: gateway-system
+                  sectionName: https-daigo-suhara-com
+                - name: public
+                  namespace: gateway-system
+                  sectionName: https-www-daigo-suhara-com
+              hostnames: [daigo-suhara.com, www.daigo-suhara.com]
+              rules:
+                - filters:
+                    - type: RequestRedirect
+                      requestRedirect:
+                        scheme: https
+                        hostname: www.pochizo.com
                         statusCode: 301
   destination:
     server: https://kubernetes.default.svc
