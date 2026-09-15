@@ -104,9 +104,28 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: wordpress
+  ignoreDifferences:
+    # The chart generates credentials when Helm cannot query the cluster.
+    # Keep the initially created values stable across Argo CD reconciliations.
+    - group: ""
+      kind: Secret
+      name: wordpress-admin
+      jsonPointers: [/data]
+    - group: ""
+      kind: Secret
+      name: wordpress-database
+      jsonPointers: [/data]
+    - group: ""
+      kind: Secret
+      name: wordpress-mysql-auth
+      jsonPointers: [/data]
+    - group: ""
+      kind: Secret
+      name: wordpress-redis-auth
+      jsonPointers: [/data]
   syncPolicy:
     automated: { prune: true, selfHeal: true }
-    syncOptions: [CreateNamespace=true, ServerSideApply=true]
+    syncOptions: [CreateNamespace=true, ServerSideApply=true, RespectIgnoreDifferences=true]
     retry:
       limit: 10
       backoff: { duration: 30s, factor: 2, maxDuration: 5m }
