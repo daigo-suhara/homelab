@@ -53,6 +53,10 @@ spec:
             enabled: true
         backup:
           enabled: false
+        php:
+          ini: |
+            upload_max_filesize = 64M
+            post_max_size = 72M
         gatewayAPI:
           enabled: true
           parentRefs:
