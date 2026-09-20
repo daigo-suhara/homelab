@@ -1,0 +1,15 @@
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: srv-04
+  namespace: metal3
+  labels:
+    cluster-role: control-plane
+spec:
+  online: true
+  bootMode: UEFI
+  bootMACAddress: "4c:52:62:15:1f:5c"
+  bmc:
+    address: ipmi://172.16.1.14
+    credentialsName: bmc-auth
+    disableCertificateVerification: true

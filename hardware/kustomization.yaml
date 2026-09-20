@@ -7,3 +7,4 @@ resources:
   - srv-01.yaml
   - srv-02.yaml
   - srv-03.yaml
+  - srv-04.yaml
