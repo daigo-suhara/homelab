@@ -5,3 +5,23 @@ metadata:
   namespace: metal3
 spec:
   clusterName: homelab
+  networkData:
+    links:
+      ethernets:
+        - id: eno1
+          type: phy
+          macAddress:
+            fromHostInterface: eno1
+    networks:
+      ipv4:
+        - id: eno1
+          link: eno1
+          ipAddressFromIPPool: homelab
+          routes:
+            - network: 0.0.0.0
+              prefix: 0
+              gateway:
+                fromIPPool: homelab
+    services:
+      dns:
+        - 1.1.1.1
