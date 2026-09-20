@@ -13,3 +13,5 @@ spec:
     address: ipmi://172.16.1.14
     credentialsName: bmc-auth
     disableCertificateVerification: true
+  rootDeviceHints:
+    serialNumber: "1980A06EF3NG"
