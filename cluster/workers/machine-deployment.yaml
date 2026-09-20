@@ -5,7 +5,7 @@ metadata:
   namespace: metal3
 spec:
   clusterName: homelab
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       cluster.x-k8s.io/cluster-name: homelab

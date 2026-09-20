@@ -4,7 +4,7 @@ metadata:
   name: srv-04
   namespace: metal3
   labels:
-    cluster-role: control-plane
+    cluster-role: worker
 spec:
   online: true
   bootMode: UEFI
