@@ -8,7 +8,7 @@ spec:
     spec:
       automatedCleaningMode: disabled
       dataTemplate:
-        name: homelab-worker
+        name: homelab-worker-networked
       image:
         url: https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2
         checksum: https://cloud.debian.org/images/cloud/bookworm/latest/SHA512SUMS
