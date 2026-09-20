@@ -8,13 +8,14 @@ spec:
     spec:
       users:
         - name: debian
+          sudo: "ALL=(ALL) NOPASSWD:ALL"
           sshAuthorizedKeys:
             - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID+3Q/eAOgoIs0pNtGvQ8ueXK1Gg8CnIdhcU9rwpeMFm suharadaigo
       joinConfiguration:
         nodeRegistration:
           kubeletExtraArgs:
             - name: node-labels
-              value: "node-role.kubernetes.io/worker=true,metal3.io/uuid={{ ds.meta_data.uuid }}"
+              value: "metal3.io/uuid={{ ds.meta_data.uuid }},ceph-mon=enabled,ceph-mgr=enabled,ceph-osd=enabled,ceph-mds=enabled"
       preKubeadmCommands:
         - apt-get update
         - apt-get install -y ca-certificates curl gpg
