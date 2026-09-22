@@ -38,6 +38,8 @@ spec:
                 devicePathFilter: "26060891625000358$"
               - name: srv-03
                 devicePathFilter: "26060891625000370$"
+              - name: srv-04
+                devicePathFilter: "(1960A03PF3NG|19R0A0PFF3NG)$"
         cephBlockPools:
           - name: rbd
             spec:
