@@ -34,5 +34,6 @@ spec:
       jsonPointers:
         - /spec/consumerRef
         - /spec/image
+        - /spec/online
         - /spec/userData
         - /spec/architecture
