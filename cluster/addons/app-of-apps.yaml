@@ -20,10 +20,17 @@ stringData:
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
+      ignoreDifferences:
+        - group: argoproj.io
+          kind: Application
+          jsonPointers:
+            - /spec/source/kustomize/images
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - RespectIgnoreDifferences=true
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta2
 kind: ClusterResourceSet

@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - gateway-api.yaml
   - cert-manager.yaml
+  - image-updater.yaml
   - public-gateway/application.yaml

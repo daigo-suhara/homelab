@@ -17,4 +17,22 @@ spec:
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: [CreateNamespace=true, ServerSideApply=true]
-
+---
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: mysite
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  writeBackConfig:
+    method: argocd
+  applicationRefs:
+    - namePattern: mysite
+      images:
+        - alias: mysite
+          imageName: ghcr.io/daigo-suhara/mysite:latest
+          commonUpdateSettings:
+            updateStrategy: digest
