@@ -7,6 +7,15 @@ metadata:
     argocd.argoproj.io/sync-wave: "30"
 spec:
   project: default
+  ignoreDifferences:
+    - group: ""
+      kind: Service
+      name: mysite
+      jsonPointers: [/spec/selector/rollouts-pod-template-hash]
+    - group: ""
+      kind: Service
+      name: mysite-preview
+      jsonPointers: [/spec/selector/rollouts-pod-template-hash]
   source:
     repoURL: https://github.com/daigo-suhara/homelab.git
     targetRevision: HEAD
@@ -16,7 +25,7 @@ spec:
     namespace: mysite
   syncPolicy:
     automated: { prune: true, selfHeal: true }
-    syncOptions: [CreateNamespace=true, ServerSideApply=true]
+    syncOptions: [CreateNamespace=true, ServerSideApply=true, RespectIgnoreDifferences=true]
 ---
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
