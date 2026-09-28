@@ -1,11 +1,17 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: mysite
   labels:
     app.kubernetes.io/name: mysite
 spec:
   replicas: 2
+  strategy:
+    blueGreen:
+      activeService: mysite
+      previewService: mysite-preview
+      autoPromotionEnabled: true
+      scaleDownDelaySeconds: 30
   selector:
     matchLabels:
       app.kubernetes.io/name: mysite
