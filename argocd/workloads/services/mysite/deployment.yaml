@@ -9,9 +9,6 @@ spec:
   strategy:
     blueGreen:
       activeService: mysite
-      previewService: mysite-preview
-      autoPromotionEnabled: true
-      scaleDownDelaySeconds: 30
   selector:
     matchLabels:
       app.kubernetes.io/name: mysite

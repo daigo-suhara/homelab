@@ -12,10 +12,6 @@ spec:
       kind: Service
       name: mysite
       jsonPointers: [/spec/selector/rollouts-pod-template-hash]
-    - group: ""
-      kind: Service
-      name: mysite-preview
-      jsonPointers: [/spec/selector/rollouts-pod-template-hash]
   source:
     repoURL: https://github.com/daigo-suhara/homelab.git
     targetRevision: HEAD
