@@ -22,6 +22,7 @@ spec:
           umask 077
           mkdir -p /data/.update-captures
           chown -R 1000:1000 /data
+          chmod 0700 /data/.update-captures
           chmod 1777 /scratch
       securityContext:
         runAsUser: 0
@@ -30,7 +31,7 @@ spec:
         readOnlyRootFilesystem: true
         capabilities:
           drop: [ALL]
-          add: [CHOWN, DAC_OVERRIDE]
+          add: [CHOWN, DAC_OVERRIDE, FOWNER]
       volumeMounts:
         - name: data
           mountPath: /data
