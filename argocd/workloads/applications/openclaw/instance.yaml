@@ -1,0 +1,12 @@
+apiVersion: openclaw.rocks/v1alpha1
+kind: OpenClawInstance
+metadata:
+  name: openclaw
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  image:
+    tag: 2026.10.7-slim
+  storage:
+    persistence:
+      storageClass: general
