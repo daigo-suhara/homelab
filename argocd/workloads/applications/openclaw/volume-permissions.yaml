@@ -1,0 +1,42 @@
+apiVersion: openclaw.rocks/v1alpha1
+kind: OpenClawInstance
+metadata:
+  name: openclaw
+spec:
+  # The existing Ceph PVC is already owned by 1000:1000; no recurring chown.
+  # A newly provisioned PVC needs a one-time ownership repair with v0.40.0.
+  initContainers:
+    - name: fix-tmp-permissions
+      image: docker.io/library/busybox:1.37
+      command: [chmod, "1777", /scratch]
+      securityContext:
+        runAsUser: 0
+        runAsNonRoot: false
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: [ALL]
+      volumeMounts:
+        - name: tmp
+          mountPath: /scratch
+    - name: prepare-update-captures
+      image: docker.io/library/busybox:1.37
+      command:
+        - sh
+        - -ec
+        - |
+          umask 077
+          mkdir -p /data/.update-captures
+          chmod 0700 /data/.update-captures
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: [ALL]
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  extraVolumeMounts:
+    - name: data
+      mountPath: /home/openclaw/.openclaw.update-captures
+      subPath: .update-captures

@@ -3,3 +3,22 @@ kind: Kustomization
 namespace: openclaw
 resources:
   - instance.yaml
+patches:
+  - path: discord.yaml
+  - path: workspace.yaml
+  - path: volume-permissions.yaml
+configMapGenerator:
+  - name: openclaw-mysite-writing
+    files:
+      - SKILL.md=skills/mysite-writing/SKILL.md
+replacements:
+  - source:
+      kind: ConfigMap
+      name: openclaw-mysite-writing
+      fieldPath: data.[SKILL.md]
+    targets:
+      - select:
+          kind: OpenClawInstance
+          name: openclaw
+        fieldPaths:
+          - spec.workspace.initialFiles.[skills/mysite-writing/SKILL.md]

@@ -1,0 +1,22 @@
+apiVersion: openclaw.rocks/v1alpha1
+kind: OpenClawInstance
+metadata:
+  name: openclaw
+spec:
+  config:
+    # Replace this map on startup so removed guild entries do not survive merges.
+    forcePaths:
+      - channels.discord.guilds
+    raw:
+      channels:
+        discord:
+          enabled: true
+          groupPolicy: open
+          dmPolicy: allowlist
+          dm:
+            enabled: true
+          allowFrom:
+            - "745471524995334287"
+          guilds:
+            "1563801526449864864":
+              requireMention: false

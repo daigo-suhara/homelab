@@ -1,0 +1,11 @@
+apiVersion: openclaw.rocks/v1alpha1
+kind: OpenClawInstance
+metadata:
+  name: openclaw
+spec:
+  workspace:
+    managedFiles:
+      - path: skills/mysite-writing/SKILL.md
+        updatePolicy: Replace
+    initialFiles:
+      skills/mysite-writing/SKILL.md: ""
