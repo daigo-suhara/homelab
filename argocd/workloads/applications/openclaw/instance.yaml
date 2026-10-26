@@ -9,6 +9,10 @@ spec:
     tag: 2026.10.7-slim
   config:
     mergeMode: merge
+  probes:
+    startup:
+      # Doctor and database maintenance exceeded the default five-minute window.
+      failureThreshold: 180
   storage:
     persistence:
       storageClass: general
