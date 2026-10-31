@@ -15,7 +15,7 @@ controllers:
         args:
           - |
             if [ ! -s /etc/ocis/ocis.yaml ]; then
-              ocis init
+              ocis init --insecure=false
             fi
             exec ocis server
         env:
