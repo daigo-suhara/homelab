@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ocis
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: default
+  sources:
+    - repoURL: https://bjw-s-labs.github.io/helm-charts
+      chart: app-template
+      targetRevision: 3.7.3
+      helm:
+        releaseName: ocis
+        valueFiles:
+          - $values/argocd/workloads/applications/ocis/values.yaml
+    - repoURL: https://github.com/daigo-suhara/homelab.git
+      targetRevision: HEAD
+      ref: values
+      path: argocd/workloads/applications/ocis
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ocis
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true, ServerSideApply=true]
+    retry:
+      limit: -1
+      backoff: {duration: 10s, factor: 2, maxDuration: 3m}

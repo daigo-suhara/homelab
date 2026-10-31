@@ -1,0 +1,67 @@
+controllers:
+  ocis:
+    strategy: Recreate
+    pod:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+    containers:
+      app:
+        image:
+          repository: owncloud/ocis
+          tag: 8.2.0
+        command: [/bin/sh, -ec]
+        args:
+          - |
+            if [ ! -s /etc/ocis/ocis.yaml ]; then
+              ocis init
+            fi
+            exec ocis server
+        env:
+          OCIS_URL: https://ocis.pochizo.com
+          PROXY_HTTP_ADDR: 0.0.0.0:9200
+          PROXY_TLS: "false"
+          IDM_CREATE_DEMO_USERS: "false"
+          IDM_ADMIN_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: ocis-admin
+                key: password
+        probes:
+          startup:
+            enabled: true
+            type: TCP
+            spec:
+              periodSeconds: 10
+              failureThreshold: 60
+          readiness:
+            enabled: true
+            type: TCP
+          liveness:
+            enabled: true
+            type: TCP
+        resources:
+          requests: {cpu: 250m, memory: 512Mi}
+          limits: {memory: 2Gi}
+service:
+  app:
+    controller: ocis
+    ports:
+      http:
+        port: 9200
+persistence:
+  config:
+    storageClass: general
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    retain: true
+    globalMounts:
+      - path: /etc/ocis
+  data:
+    storageClass: general
+    accessMode: ReadWriteOnce
+    size: 100Gi
+    retain: true
+    globalMounts:
+      - path: /var/lib/ocis

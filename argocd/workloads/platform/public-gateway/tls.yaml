@@ -48,3 +48,14 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ocis-pochizo-com
+spec:
+  secretName: ocis-pochizo-com-tls
+  dnsNames: [ocis.pochizo.com]
+  issuerRef:
+    name: letsencrypt-production
+    kind: Issuer

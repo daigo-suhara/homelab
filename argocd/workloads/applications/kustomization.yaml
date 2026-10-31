@@ -4,3 +4,4 @@ resources:
   - dashy.yaml
   - nextcloud.yaml
   - openclaw/application.yaml
+  - ocis.yaml
