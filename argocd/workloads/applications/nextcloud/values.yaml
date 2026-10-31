@@ -2,8 +2,6 @@ nextcloud:
   host: nextcloud.pochizo.com
   trustedDomains: [nextcloud.pochizo.com]
   extraEnv:
-    - name: MYSQL_USER
-      value: nextcloud
     - name: OVERWRITEHOST
       value: nextcloud.pochizo.com
     - name: OVERWRITEPROTOCOL
@@ -23,7 +21,7 @@ externalDatabase:
   existingSecret:
     enabled: true
     secretName: nextcloud-mariadb
-    usernameKey: mariadb-password
+    usernameKey: username
     passwordKey: mariadb-password
 mariadb:
   enabled: true
