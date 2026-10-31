@@ -7,3 +7,4 @@ resources:
   - image-updater.yaml
   - openclaw-operator.yaml
   - public-gateway/application.yaml
+  - external-secrets.yaml

@@ -47,3 +47,14 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: pochizo-com-tls
+    - name: https-nextcloud-pochizo-com
+      protocol: HTTPS
+      port: 443
+      hostname: nextcloud.pochizo.com
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: nextcloud-pochizo-com-tls

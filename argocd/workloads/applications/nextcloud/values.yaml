@@ -1,0 +1,39 @@
+nextcloud:
+  host: nextcloud.pochizo.com
+  trustedDomains: [nextcloud.pochizo.com]
+  extraEnv:
+    - name: OVERWRITEHOST
+      value: nextcloud.pochizo.com
+    - name: OVERWRITEPROTOCOL
+      value: https
+    - name: OVERWRITECLIURL
+      value: https://nextcloud.pochizo.com
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-credentials
+    usernameKey: username
+    passwordKey: password
+service:
+  type: ClusterIP
+internalDatabase:
+  enabled: false
+mariadb:
+  enabled: true
+  auth:
+    database: nextcloud
+    username: nextcloud
+    existingSecret: nextcloud-mariadb
+  primary:
+    persistence:
+      enabled: true
+      storageClass: general
+      size: 10Gi
+persistence:
+  enabled: true
+  storageClass: general
+  size: 100Gi
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+cronjob:
+  enabled: true
+  type: sidecar

@@ -1,0 +1,31 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: nextcloud-http-redirect
+spec:
+  parentRefs:
+    - name: public
+      namespace: gateway-system
+      sectionName: http
+  hostnames: [nextcloud.pochizo.com]
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: nextcloud
+spec:
+  parentRefs:
+    - name: public
+      namespace: gateway-system
+      sectionName: https-nextcloud-pochizo-com
+  hostnames: [nextcloud.pochizo.com]
+  rules:
+    - backendRefs:
+        - name: nextcloud
+          port: 8080
