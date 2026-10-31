@@ -1,6 +1,13 @@
 nextcloud:
   host: nextcloud.pochizo.com
   trustedDomains: [nextcloud.pochizo.com]
+  hooks:
+    before-starting: |-
+      #!/bin/sh
+      set -eu
+      if php /var/www/html/occ status --output=json | grep -q '"installed":false'; then
+        su -p -s /bin/sh www-data -c 'php /var/www/html/occ maintenance:install --database=mysql --database-host="$MYSQL_HOST" --database-name="$MYSQL_DATABASE" --database-user="$MYSQL_USER" --database-pass="$MYSQL_PASSWORD" --admin-user="$NEXTCLOUD_ADMIN_USER" --admin-pass="$NEXTCLOUD_ADMIN_PASSWORD"'
+      fi
   extraEnv:
     - name: OVERWRITEHOST
       value: nextcloud.pochizo.com
@@ -43,3 +50,7 @@ persistence:
 cronjob:
   enabled: true
   type: sidecar
+startupProbe:
+  enabled: true
+  periodSeconds: 10
+  failureThreshold: 120
