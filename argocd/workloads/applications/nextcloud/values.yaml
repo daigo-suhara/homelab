@@ -1,3 +1,4 @@
+replicaCount: 0
 nextcloud:
   host: nextcloud.pochizo.com
   trustedDomains: [nextcloud.pochizo.com]
@@ -31,7 +32,7 @@ externalDatabase:
     usernameKey: username
     passwordKey: mariadb-password
 mariadb:
-  enabled: true
+  enabled: false
   auth:
     database: nextcloud
     username: nextcloud

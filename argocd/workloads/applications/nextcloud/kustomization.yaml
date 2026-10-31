@@ -3,4 +3,3 @@ kind: Kustomization
 namespace: nextcloud
 resources:
   - credentials.yaml
-  - routes.yaml
