@@ -17,6 +17,12 @@ service:
   type: ClusterIP
 internalDatabase:
   enabled: false
+externalDatabase:
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-mariadb
+    usernameKey: username
+    passwordKey: mariadb-password
 mariadb:
   enabled: true
   auth:
