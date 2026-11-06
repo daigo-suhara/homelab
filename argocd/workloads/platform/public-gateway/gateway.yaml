@@ -47,14 +47,3 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: pochizo-com-tls
-    - name: https-ocis-pochizo-com
-      protocol: HTTPS
-      port: 443
-      hostname: ocis.pochizo.com
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: ocis-pochizo-com-tls
